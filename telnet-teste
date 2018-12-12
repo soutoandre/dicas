@@ -1,0 +1,8 @@
+while true
+do
+sleep 1
+time telnet sqlcluster02.e-unicred.com.br 57137 <<EOF
+quit
+EOF
+
+done
