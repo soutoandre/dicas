@@ -1,0 +1,28 @@
+
+##Calico
+kubectl get pods -n kube-system   -o wide  -l k8s-app=calico-node
+kubectl  delete  pods -n kube-system   -o wide  -l k8s-app=calico-node
+calicoctl node status
+calicoctl get nodes
+
+##delete pods
+
+kubectl get pods --all-namespaces -o wide | grep CrashLoopBackOff | awk '{ system("kubectl delete pod "$2" -n "$1"")  }'
+kubectl get pods --all-namespaces -o wide |grep "0/1" | grep dcbbs090ts351.e-unicred.com.br | awk '{ system("kubectl delete pod "$2" -n "$1" ; sleep  2") }'
+kubectl get pods --all-namespaces -o wide | grep dcbbs090ts351.e-unicred.com.br | awk '{ system("kubectl delete pod "$2" -n "$1" ; sleep  2") }'
+
+#list pods
+kubectl get pods --all-namespace -o wide
+kubectl get pods --all-namespace -o wide
+
+# disable scheduler
+kubectl uncordon dcbbs090ts351.e-unicred.com.br
+
+kubectl get pods --all-namespaces | grep Crash | wc -l 
+kubectl describe deploy nginx-ingress-controller --namespace=ingress-nginx
+kubectl cp filemanager realiza/storage-realiza-minio-66449995b5-q2qt7:/export
+ 2335  Aug/09/2018 - 14:25:14 kubectl cp public realiza/storage-realiza-minio-66449995b5-q2qt7:/export
+
+
+kubectl get svc --all-namespaces 
+
