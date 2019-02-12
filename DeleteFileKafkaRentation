@@ -1,0 +1,16 @@
+#Ansible: Purge old kafka logfile - controller.log
+0 1 * * * find /var/log/kafka -name "controller.log.*" -mtime +7 -exec rm -f {} \;
+#Ansible: Purge old kafka logfile - kafka-authorizer.log
+0 1 * * * find /var/log/kafka -name "kafka-authorizer.log.*" -mtime +7 -exec rm -f {} \;
+#Ansible: Purge old kafka logfile - kafka-request.log
+0 1 * * * find /var/log/kafka -name "kafka-request.log.*" -mtime +7 -exec rm -f {} \;
+#Ansible: Purge old kafka logfile - kafkaServer-gc.log
+0 1 * * * find /var/log/kafka -name "kafkaServer-gc.log.*" -mtime +7 -exec rm -f {} \;
+#Ansible: Purge old kafka logfile - log-cleaner.log
+0 1 * * * find /var/log/kafka -name "log-cleaner.log.*" -mtime +7 -exec rm -f {} \;
+#Ansible: Purge old kafka logfile - server.log
+0 1 * * * find /var/log/kafka -name "server.log.*" -mtime +7 -exec rm -f {} \;
+#Ansible: Purge old kafka logfile - state-change.log
+0 1 * * * find /var/log/kafka -name "state-change.log.*" -mtime +7 -exec rm -f {} \;
+#Ansible: Purge old plataforma.metricas.eventos.v1 topics
+0 2 * * 0 /etc/kafka_2.12-0.10.2.0/bin/kafka-topics.sh --zookeeper dcbvm090dv601.e-unicred.com.br:2181  --alter --topic plataforma.metricas.eventos.v1 --config retention.ms=30000
