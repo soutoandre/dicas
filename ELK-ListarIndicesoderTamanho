@@ -1,0 +1,1 @@
+http://localhost:9200/_cat/indices/filebeat-kube-logs-test-*?v&s=store.size:desc
