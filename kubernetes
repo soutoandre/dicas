@@ -26,3 +26,5 @@ kubectl cp filemanager realiza/storage-realiza-minio-66449995b5-q2qt7:/export
 
 kubectl get svc --all-namespaces 
 
+## list liveness probe
+curl -Sks -u usuario:senha https://apik8s.e-unicred.com.br/apis/apps/v1/deployments |    jq -r '[.items[] | {name:.metadata.name, namespace: .metadata.namespace, InitDelay: .spec.template.spec.containers[].livenessProbe.initialDelaySeconds, timeout: .spec.template.spec.containers[].livenessProbe.timeoutSeconds, periodSeconds: .spec.template.spec.containers[].livenessProbe.periodSeconds, failureThreshold: .spec.template.spec.containers[].livenessProbe.failureThreshold  }]'
