@@ -1,0 +1,15 @@
+use base
+
+   db.createUser(
+      {
+        user: "arrecadacao-tributo-us",
+        pwd: "69HpRyQT",
+        roles: [ { role: "readWrite", db: "arrecadacao-tributo-us" },
+                 { role: "read", db: "reporting" } ]
+      }
+    )
+
+
+
+
+db.auth('user','passoword');
