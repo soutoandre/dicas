@@ -3,8 +3,8 @@ use base
    db.createUser(
       {
         user: "arrecadacao-tributo-us",
-        pwd: "69HpRyQT",
-        roles: [ { role: "readWrite", db: "arrecadacao-tributo-us" },
+        pwd: "passwd",
+        roles: [ { role: "readWrite", db: "basededados" },
                  { role: "read", db: "reporting" } ]
       }
     )
