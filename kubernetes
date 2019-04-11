@@ -5,6 +5,11 @@ kubectl  delete  pods -n kube-system   -o wide  -l k8s-app=calico-node
 calicoctl node status
 calicoctl get nodes
 
+
+## scale
+
+kubectl scale --replicas=1 deployment exemplo -n teste 
+
 ##delete pods
 
 kubectl get pods --all-namespaces -o wide | grep CrashLoopBackOff | awk '{ system("kubectl delete pod "$2" -n "$1"")  }'
