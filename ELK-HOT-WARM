@@ -1,1 +1,3 @@
 https://www.elastic.co/blog/hot-warm-architecture-in-elasticsearch-5-x
+https://www.elastic.co/blog/implementing-hot-warm-cold-in-elasticsearch-with-index-lifecycle-management
+https://www.elastic.co/guide/en/elasticsearch/reference/5.1/allocation-awareness.html#forced-awareness
