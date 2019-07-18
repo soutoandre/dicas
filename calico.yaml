@@ -1,0 +1,15 @@
+I set IP_AUTODETECTION_METHOD in yaml by interface, why it is not work?
+Auto-detect the BGP IP address.
+- name: IP
+value: "autodetect"
+- name: IP_AUTODETECTION_METHOD
+value: "interface=ib0"
+- name: FELIX_HEALTHENABLED
+value: "true"
+
+
+https://github.com/projectcalico/calico/issues/2166
+https://docs.projectcalico.org/master/reference/node/configuration#ip-autodetection-methods
+https://www.youtube.com/watch?v=3gGpMmYeEO8&t=0m0s
+
+http://akxc.github.io/2018/08/23/how-to-configure-bird-IP-in-calico-node-container.html
