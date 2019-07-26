@@ -1,0 +1,46 @@
+https://success.docker.com/article/how-to-configure-a-default-tls-certificate-for-the-kubernetes-nginx-ingress-controller
+
+
+nginx config map
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-configuration
+  namespace: {{Namespace}}
+  labels:
+    app: ingress-nginx
+data:
+    proxy-body-size: 20m
+    proxy-connect-timeout: "10"
+    max-worker-connections: "65536"
+    enable-underscores-in-headers: "true"
+    reuse-port: "true"
+    worker-cpu-affinity: "auto"
+    server-tokens: "false"
+    ssl-redirect: "false"
+    allow-backend-server-header: "true"
+    ignore-invalid-headers: "true"
+    generate-request-id: "true"
+    #forwarded-for-header: "X-Real-IP"
+    #compute-full-forwarded-for: "true"
+    #hsts: "false"
+    #enable-vts-status: "true"
+    #use-proxy-protocol: "true"
+---
+
+serviceAccountName: nginx-ingress-controller
+      initContainers:
+      - name: init-sysctl
+        image: registry.cn-hangzhou.aliyuncs.com/acs/busybox:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          sysctl -w net.core.somaxconn=65535
+          sysctl -w net.ipv4.ip_local_port_range="1024 65535"
+          sysctl -w fs.file-max=1048576
+          sysctl -w fs.inotify.max_user_instances=16384
+          sysctl -w fs.inotify.max_user_watches=524288
+          sysctl -w fs.inotify.max_queued_events=16384
+        securityContext:
+          privileged: true
