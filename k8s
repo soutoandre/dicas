@@ -1,0 +1,42 @@
+Arquitetura K8s
+
+
+
+Control Plane:
+
+Master Components
+  
+  - Kube-apiserver: É a central de operação do kubernetes, Este componentes expoe a Api do kubernetes. Todas as ações são aceitas e validadas por este agente, e este é o unico componente que tem conexão com o etcd.
+
+  - Etcd : é uma base da dados chave valor, que guarda todos os dados do cluster
+
+  - Kube-scheduler: Use um algoritimo para determinar qual node irá receber os pods, Os fatores considerados para as decisões de planejamento incluem requisitos como  recursos individuais e coletivos, restrições de hardware / software / política, especificações de afinidade e antiafinidade, localidade de dados, interferência entre cargas de trabalho nos nós de computação.
+
+- kube controller-manager: É um processo que esta sempre interagindo com a api do kubernetes para determinar o estado dos compomentes e do cluster.
+Ex.
+   -  estato do nós computacionais estão operacionais ou não
+   -  controla a quantidade de replicas de um pod
+   -  instancia  endpoints como service e pods
+   -  Cria contas padrão e tokens de acesso à API para novas namespaces.
+
+- Cloud-controller-manager: O cloud-controller-manager executa apenas loops de controladores específicos do provedor de nuvem. Você deve desabilitar esses loops de controlador no kube-controller-manager.
+
+  Os seguintes controladores possuem dependências de provedor de nuvem:
+
+-  Controlador de nó: para verificar o provedor de nuvem para determinar se um nó foi excluído na nuvem após parar de responder
+-  Controlador de rotas: para configurar rotas na infraestrutura de nuvem subjacente
+-  Controlador de serviço: para criar, atualizar e excluir balanceadores de carga do provedor de nuvem
+-   Controlador de volume: para criar, anexar e montar volumes e interagir com o provedor de nuvem para orquestrar volumes
+
+Node Components
+Todos os nós de computação tem os processos  Kubelet e kube-proxy, bem como o conteiner egine, como, docker , container, Crio
+
+- kubelet - Um processo/agente que é executado em cada nó no cluster, ele  garante que os contêineres estejam sendo executados em um pod. Tambem tem forte interação com a apiserver.  
+  Se um pod exigir acesso ao armazenamento, segredos ou configmaps, o kubelet irá garantir o acesso ou a criação. Ele também envia de volta o status para kube-apiserver para eventual persistência.
+- kube-proxy : é encarregado de gerenciar a conectividade da rede to os containers, para criação das regras ele usa o iptables.
+
+
+
+
+
+
