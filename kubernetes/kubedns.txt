@@ -1,0 +1,43 @@
+## kubedns / Coredns
+https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    addonmanager.kubernetes.io/mode: EnsureExists
+  name: kube-dns
+  namespace: kube-system
+data:
+  stubDomains: |
+    {"rbs.com.br": ["10.236.64.25", "10.236.64.26", "10.1.1.40"]}
+  upstreamNameservers: |
+    ["8.8.8.8", "8.8.4.4"]
+
+###################################################3333                          
+
+kubectl -n kube-system get  configmap kube-dns -o yaml 
+apiVersion: v1
+data:
+  stubDomains: |
+    {"rbs.com.br": ["10.236.64.25", "10.236.64.26", "10.1.1.40"]}
+  upstreamNameservers: |
+    ["8.8.8.8", "8.8.4.4"]
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"stubDomains":"{\"rbs.com.br\": [\"10.236.64.25\", \"10.236.64.26\", \"10.1.1.40\"]}\n","upstreamNameservers":"[\"8.8.8.8\", \"8.8.4.4\"]\n"},"kind":"ConfigMap","metadata":{"annotations":{},"creationTimestamp":"2019-07-17T20:41:21Z","labels":{"addonmanager.kubernetes.io/mode":"EnsureExists"},"name":"kube-dns","namespace":"kube-system"}}
+  creationTimestamp: "2019-07-17T20:41:21Z"
+  labels:
+    addonmanager.kubernetes.io/mode: EnsureExists
+  name: kube-dns
+  namespace: kube-system
+  resourceVersion: "7312189"
+  selfLink: /api/v1/namespaces/kube-system/configmaps/kube-dns
+  uid: 3c60da6d-a8d3-11e9-8fdf-42010a96010c
+#####################################################################################################################
+
+
+
+

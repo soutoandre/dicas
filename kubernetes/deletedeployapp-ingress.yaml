@@ -1,0 +1,85 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-ingress-controller-rbs-internal
+  namespace: ingress-nginx
+  labels:
+    app: ingress-nginx
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: ingress-nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate 
+  template:
+    metadata:
+      annotations:
+        prometheus.io/port: "10254"
+        prometheus.io/scrape: "true"
+      labels:
+        app: ingress-nginx
+    spec:
+      serviceAccount: nginx-ingress-serviceaccount
+      containers:
+        - name: nginx-ingress-controller-rbs-internal
+          image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.25.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - /nginx-ingress-controller
+            - --election-id=nginx-ingress-controller-rbs-internal
+            - --ingress-class=nginx-rbs-internal
+            - --configmap=$(POD_NAMESPACE)/nginx-configuration
+            - --default-ssl-certificate=$(POD_NAMESPACE)/rbs.com.br
+            - --tcp-services-configmap=$(POD_NAMESPACE)/tcp-services
+            - --udp-services-configmap=$(POD_NAMESPACE)/udp-services
+            - --annotations-prefix=nginx.ingress.kubernetes.io
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          ports:
+            - name: http
+              containerPort: 80
+            - name: https
+              containerPort: 443
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          volumeMounts:
+          - mountPath: /etc/nginx/dhparam
+            name: tls-dhparam
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: tls-dhparam
+        secret:
+          defaultMode: 420
+          secretName: tls-dhparam
