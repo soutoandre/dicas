@@ -1,0 +1,4 @@
+ kubectl config current-context
+ kubectl config get-clusters  lista os clusters
+ kubectl config set-cluster  nome do cluster
+ kubectl config use-context  define o cluster a trabalhar
