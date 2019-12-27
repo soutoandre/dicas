@@ -10,3 +10,31 @@ ubuntu@k8smaster0:~$ kubectl get pv  -o=jsonpath='{range .items[*]}{.spec.capaci
 1Gi
 2Gi
 3Gi
+
+
+## list por ordem de timestamp
+kubectl get events --sort-by=.metadata.creationTimestamp
+LAST SEEN   TYPE      REASON                    OBJECT            MESSAGE
+37m         Normal    NodeNotReady              node/worker01     Node worker01 status is now: NodeNotReady
+36m         Normal    NodeNotReady              node/worker0      Node worker0 status is now: NodeNotReady
+31m         Normal    Starting                  node/k8smaster0   Starting kubelet.
+31m         Normal    NodeHasSufficientPID      node/k8smaster0   Node k8smaster0 status is now: NodeHasSufficientPID
+31m         Normal    NodeAllocatableEnforced   node/k8smaster0   Updated Node Allocatable limit across pods
+31m         Normal    NodeHasNoDiskPressure     node/k8smaster0   Node k8smaster0 status is now: NodeHasNoDiskPressure
+31m         Normal    NodeHasSufficientMemory   node/k8smaster0   Node k8smaster0 status is now: NodeHasSufficientMemory
+31m         Normal    NodeHasSufficientMemory   node/ubuntu       Node ubuntu status is now: NodeHasSufficientMemory
+31m         Normal    NodeHasNoDiskPressure     node/ubuntu       Node ubuntu status is now: NodeHasNoDiskPressure
+31m         Normal    NodeHasSufficientPID      node/ubuntu       Node ubuntu status is now: NodeHasSufficientPID
+31m         Normal    Starting                  node/ubuntu       Starting kubelet.
+31m         Normal    NodeAllocatableEnforced   node/ubuntu       Updated Node Allocatable limit across pods
+31m         Normal    Starting                  node/k8smaster0   Starting kube-proxy.
+31m         Warning   Rebooted                  node/ubuntu       Node ubuntu has been rebooted, boot id: 820d2f10-fba3-4367-89a4-5b5d31a47fd2
+31m         Normal    Starting                  node/ubuntu       Starting kube-proxy.
+31m         Normal    NodeAllocatableEnforced   node/worker0      Updated Node Allocatable limit across pods
+31m         Normal    Starting                  node/worker0      Starting kubelet.
+31m         Normal    NodeHasSufficientMemory   node/worker0      Node worker0 status is now: NodeHasSufficientMemory
+31m         Normal    NodeReady                 node/worker0      Node worker0 status is now: NodeReady
+31m         Normal    NodeHasSufficientPID      node/worker0      Node worker0 status is now: NodeHasSufficientPID
+31m         Warning   Rebooted                  node/worker0      Node worker0 has been rebooted, boot id: bbd2da36-15e0-4672-875c-98f622b34550
+31m         Normal    NodeNotReady              node/worker0      Node worker0 status is now: NodeNotReady
+31m         Normal    NodeHasNoDiskPressure     node/worker0      Node worker0 status is now: NodeH
