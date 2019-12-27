@@ -1,0 +1,12 @@
+## Listar com em ordem cresente com jsonpath
+ubuntu@k8smaster0:~$ kubectl get pv
+NAME        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
+nfs-pvol0   1Gi        RWX            Retain           Available                                   7m8s
+nfs-pvol1   3Gi        RWX            Retain           Available                                   7m8s
+pvvol-2     2Gi        RWX            Retain           Available                                   7m8s
+
+# kubectl get pv  -o=jsonpath='{range .items[*]}{.spec.capacity.storage}{"\n"}{end}' --sort-by=.spec.capacity.storage
+ubuntu@k8smaster0:~$ kubectl get pv  -o=jsonpath='{range .items[*]}{.spec.capacity.storage}{"\n"}{end}' --sort-by=.spec.capacity.storage
+1Gi
+2Gi
+3Gi
