@@ -1,0 +1,30 @@
+### status snapshot
+
+ETCDCTL_API=3 ./etcdctl --endpoints=https://127.0.0.1:2379 \
+--cacert="/etc/kubernetes/pki/etcd/ca.crt" \
+--cert="/etc/kubernetes/pki/etcd/healthcheck-client.crt" \
+--key="/etc/kubernetes/pki/etcd/healthcheck-client.key"  snapshot  status  /tmp/snapshop-etcd.db
+
+### snapshot save
+
+ETCDCTL_API=3 ./etcdctl --endpoints=https://127.0.0.1:2379 \
+--cacert="/etc/kubernetes/pki/etcd/ca.crt" \
+--cert="/etc/kubernetes/pki/etcd/healthcheck-client.crt" \
+--key="/etc/kubernetes/pki/etcd/healthcheck-client.key"  snapshot save   /tmp/snapshot-etcd.db
+
+### member list
+ETCDCTL_API=3 ./etcdctl --endpoints=https://127.0.0.1:2379 \
+--cacert="/etc/kubernetes/pki/etcd/ca.crt" \
+--cert="/etc/kubernetes/pki/etcd/healthcheck-client.crt" \
+--key="/etc/kubernetes/pki/etcd/healthcheck-client.key"  member list
+
+
+
+### restore
+mkdir -p /var/lib/etcd
+docker run --rm \
+    -v '/mnt:/backup' \
+    -v '/var/lib/etcd:/var/lib/etcd' \
+    --env ETCDCTL_API=3 \
+    'k8s.gcr.io/etcd-amd64:3.1.12' \
+    /bin/sh -c "etcdctl snapshot restore '/backup/etcd-snapshot-2018-05-24_21:54:03_UTC.db' ; mv /default.etcd/member/ /var/lib/etcd/"
