@@ -1,0 +1,37 @@
+rsync  -a -P --exclude '.git' --exclude '.vscode' --rsync-path="sudo rsync" --chown=www-data:www-data  ./  jenkins@10.245.0.3:/teste
+
+https://medium.com/google-cloud/seamless-deployments-for-servers-in-an-autoscaler-group-of-instances-8b5cedc0aa5b
+
+
+
+#Get the list of the server names behind the instanstce group using gcloud compute and grep the initial words of the instance group and output to a file.
+
+gcloud compute instance-groups managed list-instances prod-app-utoo-grp --zone asia-east1-a | grep -o "prod-app-utoo[^ ]*" > servername
+
+#Get the IP addresses for the above server names and output to a file. Clean up the IP list file which may already be there from previous deployments
+
+cat /dev/null > iplist  
+for app in `cat servername`  
+do  
+    gcloud compute instances describe $app --zone asia-east1-a | grep 'natIP' | cut -f2 -d : >> iplist   
+done    
+
+#Once you get the IP addresses, stop the tomcat and remove the worker folder
+for ip in `cat iplist`  
+do  
+    ssh -o "StrictHostKeyChecking no" jenkins@$ip "sudo service tomcat7 stop && sudo rm -rf /var/lib/tomcat7/work/*"
+done
+
+#Rsync the folders between the FTP folder and the destination server
+for ip in `cat iplist`  
+do  
+    rsync --delete -auvz --rsync-path="sudo rsync" /var/lib/jenkins/webapps/ -e 'ssh ' jenkins@$ip:/var/lib/tomcat7/webapps/
+        ssh jenkins@$ip "sudo chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/"
+done
+
+#once it's deployed, restart the tomcat service
+for ip in `cat iplist`  
+do  
+  ssh jenkins@$ip "sudo service tomcat7 restart"
+done 
+view rawdeploy.sh hosted with ❤ by GitHub
